@@ -13,6 +13,7 @@ import SignUp from './pages/SignUp';
 import CreateListing from './pages/CreateListing';
 import ShowListing from './pages/ShowListing';
 import UpdateListing from './pages/UpdateListing';
+import Listing from './pages/Listing';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/signin' element={<SignIn />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/listing/show/:id' element={<Listing />} />
         <Route element={<PrivateRoute />}>
           <Route path='/profile' element={<Profile />} />
           <Route path='/listing/create' element={<CreateListing />} />
