@@ -17,7 +17,7 @@ router.put("/update/:id", verifyToken, updateListing);
 router.delete("/delete/:id", verifyToken, deleteListing);
 router.get("/get/:id", verifyToken, getListings);
 
-// Read only endpoint for any user
+// Public Endpoint
 router.get("/get/public/:id", getPublicPropertyById);
 
 export default router;
