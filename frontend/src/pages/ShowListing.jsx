@@ -96,7 +96,7 @@ function ShowListing() {
                                         <div
                                             key={listing.id}
                                         >
-                                            <Link to={`/listing/${listing.id}`} className="flex-1">
+                                            <Link to={`/listing/show/${listing.id}`} className="flex-1">
                                                 <p className="font-semibold text-lg hover:underline truncate">{listing.name}</p>
                                                 <p>{listing.address}</p>
                                             </Link>

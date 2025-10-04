@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { FaBath, FaBed, FaChair, FaMapMarkedAlt, FaParking } from "react-icons/fa";
+import Contact from "../components/Contact";
 
 function Listing() {
     const [listing, setListing] = useState(null);
+    const [contact, setContact] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { currentUser } = useSelector((state) => state.user);
     const params = useParams();
 
     const fetchListing = async () => {
@@ -50,7 +54,7 @@ function Listing() {
                         // Add image and slider when images are available
                         <>
                             <div className="flex flex-col mx-auto my-7 max-w-4xl h-100 text-center gap-4">
-                                <h1 className="text-3xl font-semibold w-auto">
+                                <h1 className="text-5xl font-semibold w-auto">
                                     {listing.name}
                                 </h1>
                                 <p className="flex justify-center items-center gap-1">
@@ -105,10 +109,19 @@ function Listing() {
                                         {listing.parking ? "Available" : "Not Available"}
                                     </li>
                                     <li className="flex items-center gap-1 whitespace-nowrap">
-                                        <FaChair className="text-xl"/>
+                                        <FaChair className="text-xl" />
                                         {listing.furnished ? "Furnished" : "Not Furnished"}
                                     </li>
                                 </ul>
+                                {currentUser && +listing.userRef !== currentUser.user.id && !contact && (
+                                    <button 
+                                        className="bg-slate-700 text-white rounded-lg hover:opacity-95 p-2 cursor-pointer w-[50%] mx-auto"
+                                        onClick={()=>setContact(true)}
+                                    >
+                                        Contact Owner
+                                    </button>
+                                )}
+                                {contact && <Contact listing={listing}/>}
                             </div>
                         </>
                     )
