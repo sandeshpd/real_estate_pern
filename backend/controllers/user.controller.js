@@ -15,6 +15,23 @@ export async function getUsers(req, res, next) {
     }
 };
 
+export async function getUserById(req, res, next) {
+    try {
+        const userFound = await prisma.users.findFirst({ where: { id: +req.params.id } });
+        if (!userFound) {
+            const error = new Error("User Not Found.");
+            error.statusCode = 404;
+            return next(error);
+        }
+
+        const { password: pass, ...rest } = userFound;
+        res.status(200).json(rest);
+    } catch (error) {
+        console.log("Something went wrong:", error);
+        next(error);
+    }
+};
+
 export async function updateUser(req, res, next) {
     // FIXED: Convert type of both id's to Integer in order to match those
     if (+req.user.id !== +req.params.id) {
