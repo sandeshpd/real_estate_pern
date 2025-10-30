@@ -11,7 +11,7 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/get/all", verifyToken, getAllListings);
+router.get("/get/all", getAllListings);
 router.post("/create", verifyToken, createListing);
 router.put("/update/:id", verifyToken, updateListing);
 router.delete("/delete/:id", verifyToken, deleteListing);

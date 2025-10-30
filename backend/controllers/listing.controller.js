@@ -48,10 +48,38 @@ export async function createListing(req, res, next) {
 // API Endpoint to retrieve all Listings from the database
 export async function getAllListings(req, res, next) {
     try {
-        const properties = await prisma.listings.findMany();
+        const limit = parseInt(req.query.limit) || 9;
+        // YouTube: paused at 8:35:00
+        const startIndex = parseInt(req.query.startIndex) || 0;
+
+        let offer = req.query.offer === "true" ? true : undefined;
+        let furnished = req.query.furnished === "true" ? true : undefined;
+        let parking = req.query.parking === "true" ? true : undefined;
+
+        let type = req.query.type;
+        if (!type || type === "all") {
+            type = undefined;
+        }
+        const search = req.query.search || "";
+        const sort = req.query.sort || "createdAt";
+        const order = req.query.order || "desc";
+        const properties = await prisma.listings.findMany({
+            skip: startIndex,
+            take: limit,
+            orderBy: {
+                [sort]: order
+            },
+            where: {
+                name: { contains: search, mode: "insensitive" },
+                ...(offer !== undefined && { offer }),
+                ...(furnished !== undefined && { furnished }),
+                ...(parking !== undefined && { parking }),
+                ...(type && { type })
+            }
+        });
         res.status(200).json(properties);
     } catch (error) {
-        console.error("Something went wrong:", error);
+        console.error("Unable to fetch data at the moment", error);
         next(error);
     }
 };
